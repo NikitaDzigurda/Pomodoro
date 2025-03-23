@@ -1,0 +1,26 @@
+[project]
+name = "pomodoro-poetry"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "NikitaDzigurda",email = "timofeev.matvey0107@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi (>=0.115.8,<0.116.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "pydantic-settings (>=2.8.0,<3.0.0)",
+    "sqlalchemy (>=2.0.38,<3.0.0)",
+    "alembic (>=1.15.1,<2.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "redis (>=5.2.1,<6.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "pomodoro_poetry", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
