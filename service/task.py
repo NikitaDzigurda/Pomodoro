@@ -7,7 +7,8 @@ from scheme import TaskSchema
 class TaskService:
     task_repository: TasksRepository
     task_cache: TaskCache
-    def get_tasks(self):
+
+    def get_tasks(self) -> list[TaskSchema]:
         if tasks := self.task_cache.get_tasks():
             return tasks
 
