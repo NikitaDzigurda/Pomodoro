@@ -1,16 +1,6 @@
-from typing import Any, Optional
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, declared_attr
-
-
-class Base(DeclarativeBase):
-    id: Any
-    __name__: str
-
-    __allow_unmapped__ = True
-
-    @declared_attr
-    def __tablename__(self) -> str:
-        return self.__name__.lower()
+from typing import Optional
+from sqlalchemy.orm import Mapped, mapped_column
+from database import Base
 
 
 class Tasks(Base):
@@ -32,4 +22,3 @@ class Categories(Base):
     type: Mapped[Optional[str]]
 
     __table_args__ = {"extend_existing": True}
-

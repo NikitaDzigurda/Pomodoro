@@ -1,10 +1,6 @@
-import importlib
+from handlers.tasks import router as task_router
+from handlers.ping import router as ping_router
+from handlers.user import router as user_router
+from handlers.auth import router as auth_router
 
-routers = []
-modules = ["tasks", "ping"]
-
-for module_name in modules:
-    module = importlib.import_module(f"handlers.{module_name}")
-    if hasattr(module, "router"):
-        routers.append(module.router)
-
+routers = [task_router, ping_router, user_router, auth_router]
