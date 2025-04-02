@@ -1,19 +1,17 @@
 from sqlalchemy import insert, select
 from dataclasses import dataclass
 from models import UserProfile
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
+from scheme import UserCreateSchema
 
 
 @dataclass
 class UserRepository:
     db_session: Session
 
-    def create_user(self, username: str, password: str, access_token: str) -> UserProfile:
+    def create_user(self, user: UserCreateSchema) -> UserProfile:
         query = insert(UserProfile).values(
-            username=username,
-            password=password,
-            access_token=access_token
+            **user.model_dump(),
         ).returning(UserProfile.id)
 
         user_id: int = self.db_session.execute(query).scalar()
@@ -28,3 +26,6 @@ class UserRepository:
         query = select(UserProfile).where(UserProfile.username == username)
         return self.db_session.execute(query).scalar_one_or_none()
 
+    def get_google_user(self, google_token: str) -> UserProfile | None:
+        query = select(UserProfile).where(UserProfile.google_access_token == google_token)
+        return self.db_session.execute(query).scalar_one_or_none()

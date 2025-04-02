@@ -17,3 +17,8 @@ class TaskSchema(BaseModel):
             raise ValueError
         return self
 
+
+class TaskCreateSchema(BaseModel):
+    name: str | None = None
+    pomodoro_count: int | None = None
+    category_id: int

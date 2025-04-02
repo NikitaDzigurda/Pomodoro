@@ -2,25 +2,31 @@ from sqlalchemy import select, delete, update
 from sqlalchemy.orm import Session
 
 from models import Categories, Tasks
-from scheme.task import TaskSchema
+from scheme.task import TaskSchema, TaskCreateSchema
+
 
 class TasksRepository:
 
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def get_tasks(self):
+    def get_tasks(self, user_id: int):
         with self.db_session as session:
-            task: list[Tasks] = session.execute(select(Tasks)).scalars().all()
-        return task
+            tasks = session.execute(select(Tasks).where(Tasks.user_id == user_id)).scalars().all()
+        return tasks
 
     def get_task(self, task_id: int) -> Tasks | None:
         with self.db_session as session:
             task: Tasks = session.execute(select(Tasks).where(Tasks.id == task_id)).scalar_one_or_none()
         return task
 
-    def create_task(self, task: TaskSchema) -> int:
-        task_model = Tasks(name=task.name, pomodoro_count=task.pomodoro_count, category_id=task.category_id)
+    def create_task(self, task: TaskCreateSchema, user_id: int) -> int:
+        task_model = Tasks(
+            name=task.name,
+            pomodoro_count=task.pomodoro_count,
+            category_id=task.category_id,
+            user_id=user_id
+        )
         with self.db_session as session:
             session.add(task_model)
             session.commit()

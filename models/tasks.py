@@ -10,6 +10,7 @@ class Tasks(Base):
     name: Mapped[str]
     pomodoro_count: Mapped[int]
     category_id: Mapped[int]
+    user_id: Mapped[int] = mapped_column(nullable=True)
 
     __table_args__ = {"extend_existing": True}
 

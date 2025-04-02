@@ -1,5 +1,5 @@
-from typing import Any, Optional
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, declared_attr
+from typing import Any
+from sqlalchemy.orm import DeclarativeBase, declared_attr
 
 
 class Base(DeclarativeBase):

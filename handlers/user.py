@@ -3,6 +3,7 @@ from typing import Annotated
 from scheme import UserLoginSchema, UserCreateSchema
 from service import UserService
 from dependency import get_user_service
+
 router = APIRouter(prefix="/user", tags=['user'])
 
 
