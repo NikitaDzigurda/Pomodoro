@@ -21,7 +21,7 @@ async def login(
 ):
 
     try:
-        return auth_service.login(body.username, body.password)
+        return await auth_service.login(body.username, body.password)
 
     except UserNotFoundedException as e:
         raise HTTPException(
@@ -42,7 +42,7 @@ async def token(
         form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
     try:
-        user_dict = auth_service.login(form_data.username, form_data.password)
+        user_dict = await auth_service.login(form_data.username, form_data.password)
         return {"access_token": user_dict.access_token, "token_type": "bearer"}
 
     except UserNotFoundedException as e:
@@ -62,7 +62,7 @@ async def token(
     '/login/google',
     response_class=RedirectResponse
 )
-async def google_login(
+async def get_google_login(
         auth_service: Annotated[AuthService, Depends(get_auth_service)]
 ):
     redirect_url = auth_service.get_google_redirect_url()
@@ -70,9 +70,26 @@ async def google_login(
     return RedirectResponse(redirect_url)
 
 
-@router.get('/api/auth/google')
+@router.get('/api/google')
 async def google_auth(
         auth_service: Annotated[AuthService, Depends(get_auth_service)],
         code: str
 ):
-    return auth_service.google_auth(code=code)
+    return await auth_service.google_auth(code=code)
+
+
+@router.get('/api/yandex')
+async def yandex_auth(
+        auth_service: Annotated[AuthService, Depends(get_auth_service)],
+        code: str
+):
+    return await auth_service.yandex_auth(code=code)
+
+
+@router.get('/login/yandex')
+async def get_yandex_login(
+        auth_service: Annotated[AuthService, Depends(get_auth_service)],
+):
+    redirect_url = auth_service.get_yandex_redirect_url()
+    print(redirect_url)
+    return RedirectResponse(redirect_url)
