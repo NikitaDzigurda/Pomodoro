@@ -98,3 +98,14 @@ class AuthService:
 
         except JWTError:
             raise TokenNotCorrectException
+
+    def get_user_id_from_access_token(self, token: str) -> int:
+        try:
+            payload = jwt.decode(token, self.settings.JWT_SECRET_KEY, algorithms=[self.settings.JWT_ENCODE_ALGORITHM])
+
+        except JWTError:
+            raise TokenNotCorrectException
+        if payload["expire"] < dt.now(timezone.utc).timestamp():
+            raise InvalidTokenException
+
+        return payload["user_id"]
